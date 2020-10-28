@@ -18,8 +18,6 @@ Shader "Custom/Sprites/Double"
     {
         Tags
         {
-            "Queue"="Transparent"
-            "IgnoreProjector"="True"
             "RenderType"="Transparent"
             "PreviewType"="Plane"
             "CanUseSpriteAtlas"="True"
@@ -32,6 +30,7 @@ Shader "Custom/Sprites/Double"
 
         Pass
         {
+            Name "refrecter"
             Stencil{
                 Ref 1
                 Comp Equal
@@ -125,10 +124,10 @@ Shader "Custom/Sprites/Double"
                     fixed4 alpha = tex2D (_AlphaTex, uv);
                     color.a = lerp (color.a, alpha.r, _EnableExternalAlpha);
                 #endif
-
+                
                 return color;
             }
-
+            
             fixed4 SpriteFrag(v2f IN) : SV_Target
             {
                 fixed4 c = SampleSpriteTexture(IN.texcoord) * IN.color;
@@ -137,8 +136,10 @@ Shader "Custom/Sprites/Double"
             }
             ENDCG
         }
+        
         Pass
         {
+            Tags{"LightMode" = "Universal2D"}
             CGPROGRAM
             #pragma vertex SpriteVert
             #pragma fragment SpriteFrag
