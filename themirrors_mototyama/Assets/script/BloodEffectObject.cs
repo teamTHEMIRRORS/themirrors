@@ -37,6 +37,7 @@ public class BloodEffectObject : MonoBehaviour
 
     void Start()
     {
+        if(_volumeProfile)
         _volumeProfile.TryGet<Vignette>(out _vignette);
     }
 

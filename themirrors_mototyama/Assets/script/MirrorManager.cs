@@ -7,8 +7,7 @@ public class MirrorManager : MonoBehaviourPun
 {
     GameObject gamemanager;
     GameManager gamemanagerscript;
-    bool breakflag = false;
-    bool enterflag = false;
+    
 
     // Start is called before the first frame update
     void Start()

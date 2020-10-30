@@ -20,7 +20,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public static GameObject player;
     public GameObject selectcanvas;
     public GameObject startcanbus;
-    public GameObject cameramanager;
+    public GameObject camera;
+    //public GameObject cameramanager;
     public GameObject[] survivors;
     public GameObject killer;
 
@@ -96,7 +97,6 @@ public class GameManager : MonoBehaviourPunCallbacks
                 if (UIManager.bottunList == null)
                 {
                     
-
                     GameObject buttun = PhotonNetwork.Instantiate(this.bottunPrefab.name, this.bottunPrefab.transform.position, Quaternion.identity, 0);
                     //GameObject buttun = Instantiate(bottunPrefab);
                     buttun.transform.SetParent(uilist.transform);
@@ -161,9 +161,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         //playercounter += 1;
         CreateCharacter();
         //Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
+        camera.transform.parent = player.transform;
 
         //selectcanvas.SetActive(false);
-        Instantiate(cameramanager);
+        //Instantiate(cameramanager);
     }
 
     public void DecideKillerRole()
@@ -172,7 +173,12 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             playerrole = "killer";
             CreateCharacter();
-            Instantiate(cameramanager);
+            //Instantiate(cameramanager);
+            
+            float cameraposx = player.transform.position.x;
+            //float cameraposy = player.transform.position.y;
+            camera.transform.position = new Vector3(cameraposx,3.5f,camera.transform.position.z);
+            camera.transform.parent = player.transform;
         }
         else
         {
@@ -261,13 +267,15 @@ public class GameManager : MonoBehaviourPunCallbacks
             //startcanbus.SetActive(true);
 
         }
+
+        Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
     }
 
     private void Awake()
     {
-        
+
         //playerinstance = this.GetComponent<PlayerInstance>();
-        
+        camera = GameObject.Find("Camera");
     }
 
     #endregion
