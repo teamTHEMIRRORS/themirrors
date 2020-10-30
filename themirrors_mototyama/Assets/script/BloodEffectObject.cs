@@ -37,8 +37,10 @@ public class BloodEffectObject : MonoBehaviour
 
     void Start()
     {
-        if(_volumeProfile)
-        _volumeProfile.TryGet<Vignette>(out _vignette);
+        if (_volumeProfile)
+        {
+            _volumeProfile.TryGet<Vignette>(out _vignette);
+        }
     }
 
     // Update is called once per frame

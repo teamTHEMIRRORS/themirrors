@@ -17,14 +17,18 @@ namespace script
         {
             _attachedSpriteRenderer = GetComponent<SpriteRenderer>();
         }
-
+        
+        /// <summary>
+        /// _isPoltergeistedがオンの時にスプライトをランダム時間差し替えるよ。
+        /// </summary>
         private void Update()
         {
             if (_isPoltergeisted)
             {
-                randamvol += Random.Range(0, 0.1f);
+                randamvol += Random.Range(0, 0.03f);
                 if (randamvol > 1.0)
                 {
+                    randamvol = 0;
                     baseSpr = !baseSpr;
                     _attachedSpriteRenderer.sprite = _sprites[baseSpr ? 0:1];
                 }
