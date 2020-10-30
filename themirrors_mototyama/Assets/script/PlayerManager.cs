@@ -13,8 +13,20 @@ public class PlayerManager : MonoBehaviourPunCallbacks//,IPunObservable
     public static GameObject LocalPlayerInstance;
 
     public int HP = 100;
+    public bool breakmirror = false;
+    public bool upstairs = false;
+    public bool downstairs = false;
     public GameObject gamemanager;
     GameManager gamemanagerscript;
+    GameObject mirror;
+    GameObject stairs;
+    MirrorManager mirrormanager;
+    BloodEffectObject bloodeffectobject;
+    UpStairs up_stair;
+    DownStairs down_stair;
+    
+
+    float time = 0.0f;
 
     #endregion
 
@@ -28,12 +40,13 @@ public class PlayerManager : MonoBehaviourPunCallbacks//,IPunObservable
         //DontDestroyOnLoad(this.gameObject);
         gamemanager = GameObject.Find("GameManager");
         gamemanagerscript = gamemanager.GetComponent<GameManager>();
+        bloodeffectobject = this.GetComponentInChildren<BloodEffectObject>();
 
     }
 
     private void Start()
     {
-        #if UNITY_5_4_OR_NEWER
+#if UNITY_5_4_OR_NEWER
         // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
         {
@@ -46,7 +59,51 @@ public class PlayerManager : MonoBehaviourPunCallbacks//,IPunObservable
     {
         if(HP <= 0 && photonView.IsMine)
         {
-            gamemanagerscript.LeaveRoom();
+            bloodeffectobject.damage = 1.0f;
+
+            time += Time.deltaTime;
+
+            if(time > 1.5f)
+            {
+                gamemanagerscript.LeaveRoom();
+            }
+            
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Mirror"))
+        {
+            Debug.Log("hit mirror");
+            breakmirror = true;
+            mirror = collision.gameObject;
+        }
+        else if (collision.gameObject.CompareTag("UpStairs"))
+        {
+            upstairs = true;
+            stairs = collision.gameObject;
+        }
+        else if (collision.gameObject.CompareTag("DownStairs"))
+        {
+            downstairs = true;
+            stairs = collision.gameObject;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Mirror"))
+        {
+            breakmirror = false;
+        }
+        else if (collision.gameObject.CompareTag("UpStairs"))
+        {
+            upstairs = false;
+        }
+        else if (collision.gameObject.CompareTag("DownStairs"))
+        {
+            downstairs = false;
         }
     }
 
@@ -73,7 +130,25 @@ public class PlayerManager : MonoBehaviourPunCallbacks//,IPunObservable
 
     public void SurviorAction()
     {
+        if (breakmirror)
+        {
+            mirrormanager = mirror.GetComponent<MirrorManager>();
+            mirrormanager.Breaking();
+        }
+        else if (upstairs)
+        {
+            up_stair = stairs.GetComponent<UpStairs>();
+            this.gameObject.transform.position = up_stair.stairs_up.transform.position;
+        }
+        else if (downstairs)
+        {
+            down_stair = stairs.GetComponent<DownStairs>();
+            this.gameObject.transform.position = down_stair.stairs_down.transform.position;
+        }
 
+        breakmirror = false;
+        upstairs = false;
+        downstairs = false;
     }
 
 

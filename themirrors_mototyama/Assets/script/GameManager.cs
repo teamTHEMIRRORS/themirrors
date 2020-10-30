@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public static string playerrole;
     public int playercounter = 0;
     public int maxplayer;
+    public int breakedmirror = 0;
+
 
     //PlayerInstance playerinstance;
 
@@ -82,7 +84,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                     Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 
                     // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                    player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
+                    player = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 0.25f, -1f), Quaternion.identity, 0);
                     //player = Instantiate(playerPrefab);
 
                 }
@@ -122,7 +124,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                     // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
                     if(killerexist == false)
                     {
-                        player = PhotonNetwork.Instantiate(this.killerPrefab.name, new Vector3(10f, 0f, 0f), Quaternion.identity, 0);
+                        player = PhotonNetwork.Instantiate(this.killerPrefab.name, new Vector3(10f, 0.25f, -1f), Quaternion.identity, 0);
                     }
                     //player = PhotonNetwork.Instantiate(this.killerPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
                     //player = Instantiate(playerPrefab);
@@ -194,8 +196,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     
 
-    private void Start()
-    {
+    //private void Start()
+    //{
         //Instance = this;
         //GameObject uilist = GameObject.Find("UIList");
 
@@ -233,7 +235,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         //}
 
         //CreateCharacter();
-    }
+    //}
 
     private void Update()
     {

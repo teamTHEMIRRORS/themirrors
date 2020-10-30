@@ -38,10 +38,6 @@
                 v2f o;
                 o.vertex = TransformObjectToHClip(v.vertex);
                 o.uv = v.uv;
-                if (_isReverseUV)
-                {
-                    o.uv.y = 1 - o.uv.y;
-                }
                 return o;
             }
 
@@ -54,7 +50,6 @@
             float4 frag(v2f i) : SV_Target
             {
                 # if UNITY_UV_STARTS_AT_TOP
-                if (_MainTex_TexelSize.y < 0)
                     i.uv.y = 1 - i.uv.y;
                 # endif
                 float4 col = tex2D(_MainTex, i.uv);

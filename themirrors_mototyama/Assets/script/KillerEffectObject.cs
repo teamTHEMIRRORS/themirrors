@@ -11,7 +11,6 @@ public class KillerEffectObject : MonoBehaviour
     public VolumeProfile _volumeProfile;
 
     private int _tempTargetId = Shader.PropertyToID("_tempTargetId");
-    public Boolean _isReverseUV = true;
     [Range(0, 1), Tooltip("エフェクトの量")] public float _effectVolume;
 
     public Boolean InnerMirror = false;
@@ -35,7 +34,6 @@ public class KillerEffectObject : MonoBehaviour
     /// </summary>
     void Update()
     {
-        _killerEffectmaterial.SetInt("_isReverseUV", _isReverseUV ? 1 : 0);
         _effectVolume = Mathf.Clamp(InnerMirror ? _effectVolume + 0.01f : _effectVolume - 0.01f, 0, 1);
         _killerEffectmaterial.SetFloat("_effectVolume", _effectVolume);
     }

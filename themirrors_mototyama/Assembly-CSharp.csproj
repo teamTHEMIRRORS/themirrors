@@ -79,12 +79,14 @@
     <Compile Include="Assets\script\ActionBottun.cs" />
     <Compile Include="Assets\script\BloodEffectObject.cs" />
     <Compile Include="Assets\script\CameraManager.cs" />
+    <Compile Include="Assets\script\DownStairs.cs" />
+    <Compile Include="Assets\script\DualSpriteRenderer.cs" />
     <Compile Include="Assets\script\GameManager.cs" />
     <Compile Include="Assets\script\KillerEffectObject.cs" />
     <Compile Include="Assets\script\KillerManager.cs" />
     <Compile Include="Assets\script\Launcher.cs" />
     <Compile Include="Assets\script\LeftBottun.cs" />
-    <Compile Include="Assets\script\MirrorBreak.cs" />
+    <Compile Include="Assets\script\MirrorManager.cs" />
     <Compile Include="Assets\script\PlayerInstance.cs" />
     <Compile Include="Assets\script\PlayerManager.cs" />
     <Compile Include="Assets\script\PlayerMove.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="Assets\script\PlayerNameInputField.cs" />
     <Compile Include="Assets\script\RightBottun.cs" />
     <Compile Include="Assets\script\UIManager.cs" />
+    <Compile Include="Assets\script\UpStairs.cs" />
     <Compile Include="Assets\shader\collectLight.cs" />
     <None Include="Assets\shader\KillerEffectShader.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -101,8 +104,10 @@
     <None Include="Assets\Photon\PhotonUnityNetworking\changelog.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\shader\UnitySprites.cginc" />
+    <None Include="Assets\shader\Sprite-Lit-Player.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
+    <None Include="Assets\shader\ProjectionTransformShader.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />

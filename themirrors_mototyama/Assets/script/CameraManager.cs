@@ -34,7 +34,7 @@ public class CameraManager : MonoBehaviour
     void CameraDestoroy()
     {
         cameras = GameObject.FindGameObjectsWithTag("MainCamera");
-        Debug.Log(cameras.Length);
+        //Debug.Log(cameras.Length);
         if(cameras.Length > 1)
         {
             for(int i = 0; i < cameras.Length; i++)

@@ -30,7 +30,7 @@ public class KillerManager : MonoBehaviourPunCallbacks
 
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -44,6 +44,7 @@ public class KillerManager : MonoBehaviourPunCallbacks
             entermirror = true;
         }
     }
+
 
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -96,14 +97,20 @@ public class KillerManager : MonoBehaviourPunCallbacks
     {
         if (kill)
         {
+            Animator killanim = GetComponent<Animator>();
+            killanim.SetBool("kill", true);
             playerManager = player.GetComponent<PlayerManager>();
             //playerManager.HP -= 1000;
             playerManager.Damageplayer();
+            killanim.SetBool("kill", false);
         }
         else if (entermirror)
         {
 
         }
+
+        kill = false;
+        entermirror = false;
     }
 
     

@@ -12,6 +12,8 @@ public class BloodEffectObject : MonoBehaviour
 {
     private Material BloodEffectmaterial;
     [Tooltip("ダメージのエフェクトシェーダー")] public Shader damageEffectSahder;
+    private Material ProjectionTransformEffectmaterial;
+    [Tooltip("血痕をProjection空間に投影するエフェクトシェーダー")] public Shader ProjectionTransformEffectSahder;
     public List<Sprite> BloodSpr;
     [Range(0, 1), Tooltip("ダメージの量")] public float damage;
     private float inpactnum;
@@ -21,8 +23,6 @@ public class BloodEffectObject : MonoBehaviour
 
     [Tooltip("PostEffectのVolumeProfileを入れる")]
     public VolumeProfile _volumeProfile;
-
-    public Boolean _isReverseUV = true;
     private Vignette _vignette;
 
     private int TempTargetId = Shader.PropertyToID("_tempTargetId");
@@ -32,6 +32,7 @@ public class BloodEffectObject : MonoBehaviour
     {
         RenderPipelineManager.endCameraRendering += ExecutePlanarReflections;
         BloodEffectmaterial = new Material(damageEffectSahder);
+        ProjectionTransformEffectmaterial = new Material(ProjectionTransformEffectSahder);
     }
 
     void Start()
@@ -49,9 +50,10 @@ public class BloodEffectObject : MonoBehaviour
         {
             GameObject obj = new GameObject();
             obj.AddComponent<SpriteRenderer>().sprite = BloodSpr[Random.Range(0, BloodSpr.Count)];
+            obj.GetComponent<Renderer>().material = ProjectionTransformEffectmaterial;
             var position = Random.insideUnitCircle.normalized;
             position *= Random.Range(6.5f, 10f);
-            obj.transform.Translate(position.x, position.y, 0);
+            obj.transform.Translate(position.x, position.y, -1);
             obj.transform.Rotate(0, 0, Random.Range(0, 360));
             BloodObjSta.Push(obj);
         }
@@ -64,7 +66,6 @@ public class BloodEffectObject : MonoBehaviour
         }
 
         BloodEffectmaterial.SetFloat("_effectVolume", inpactnum / 4f);
-        BloodEffectmaterial.SetInt("_isReverseUV", _isReverseUV ? 1:0);
         inpactnum = Mathf.Max(inpactnum - Mathf.Max(inpactnum * 0.005f, 0.0005f), 0);
         if (_vignette == null)
         {

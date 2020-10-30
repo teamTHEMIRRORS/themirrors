@@ -10,6 +10,8 @@ public class PlayerMove : MonoBehaviourPun
     public Vector2 direction;
     bool pushright = false;
     bool pushleft = false;
+    SpriteRenderer playersprite;
+    
 
     //ボタンの検知
     public void PushDownRight()
@@ -62,6 +64,7 @@ public class PlayerMove : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
+        Animator anim = GetComponent<Animator>();
         /*
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -80,9 +83,23 @@ public class PlayerMove : MonoBehaviourPun
         */
         if (pushright == true | pushleft == true)
         {
+            
+            anim.SetBool("walk", true);
             Move();
         }
+        else
+        {
+            playersprite.flipX = false;
+            anim.SetBool("walk", false);
+        }
+
+
         
+    }
+
+    private void Awake()
+    {
+        playersprite = this.GetComponent<SpriteRenderer>();
     }
 
     //プレイヤーの移動
@@ -90,6 +107,7 @@ public class PlayerMove : MonoBehaviourPun
     {
         if (pushright)
         {
+            playersprite.flipX = true;
             direction = new Vector2(1.0f, 0).normalized;
         }
         else

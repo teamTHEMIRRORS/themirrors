@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Killer
   - Camera
+  - Mirror
+  - UpStairs
+  - DownStairs
   layers:
   - Default
   - TransparentFX
