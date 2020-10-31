@@ -42,6 +42,9 @@ MonoBehaviour:
   - KillPlayer
   - KilledPlayer
   - BreakMirror
+  - PlayerCount
+  - PlayerCountUp
+  - Flipplayer
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -6,12 +6,7 @@ using UnityEngine.EventSystems;
 public class LeftBottun : MonoBehaviour
 {
     private int c = 0;
-    // Start is called before the first frame update
-    void Start()
-    {
-        //AddEvent();
-    }
-
+    
     // Update is called once per frame
     void Update()
     {

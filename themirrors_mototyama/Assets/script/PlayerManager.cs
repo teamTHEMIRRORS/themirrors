@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.Demo.PunBasics;
@@ -16,6 +17,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks//,IPunObservable
     public bool breakmirror = false;
     public bool upstairs = false;
     public bool downstairs = false;
+    public bool dontMove = false;
     public GameObject gamemanager;
     GameManager gamemanagerscript;
     GameObject mirror;
@@ -24,6 +26,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks//,IPunObservable
     BloodEffectObject bloodeffectobject;
     UpStairs up_stair;
     DownStairs down_stair;
+    Animator playeranim;
     
 
     float time = 0.0f;
@@ -41,19 +44,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks//,IPunObservable
         gamemanager = GameObject.Find("GameManager");
         gamemanagerscript = gamemanager.GetComponent<GameManager>();
         bloodeffectobject = this.GetComponentInChildren<BloodEffectObject>();
+        playeranim = GetComponent<Animator>();
 
     }
 
-    private void Start()
-    {
-//#if UNITY_5_4_OR_NEWER
-        // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
-        //UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
-        //{
-            //this.CalledOnLevelWasLoaded(scene.buildIndex);
-        //};
-        //#endif
-    }
+    
 
     private void Update()
     {
@@ -62,20 +57,24 @@ public class PlayerManager : MonoBehaviourPunCallbacks//,IPunObservable
             bloodeffectobject.damage = 1.0f;
 
             time += Time.deltaTime;
-
+            dontMove = true;
             if(time > 1.5f)
             {
                 gamemanagerscript.LeaveRoom();
+                SceneManager.LoadScene("Lose");
+                dontMove = false;
             }
             
         }
+
+        
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Mirror"))
         {
-            Debug.Log("hit mirror");
+            //Debug.Log("hit mirror");
             breakmirror = true;
             mirror = collision.gameObject;
         }
@@ -88,6 +87,14 @@ public class PlayerManager : MonoBehaviourPunCallbacks//,IPunObservable
         {
             downstairs = true;
             stairs = collision.gameObject;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            GetComponent<BoxCollider2D>().isTrigger = false;
         }
     }
 
@@ -104,6 +111,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks//,IPunObservable
         else if (collision.gameObject.CompareTag("DownStairs"))
         {
             downstairs = false;
+        }
+        else if (collision.gameObject.CompareTag("Wall"))
+        {
+            GetComponent<BoxCollider2D>().isTrigger = true;
+
         }
     }
 
@@ -128,11 +140,14 @@ public class PlayerManager : MonoBehaviourPunCallbacks//,IPunObservable
     //}
     #endregion
 
+    
     public void SurviorAction()
     {
         if (breakmirror)
         {
+            
             mirrormanager = mirror.GetComponent<MirrorManager>();
+            StartCoroutine("Breakcoroutine");
             mirrormanager.Breaking();
         }
         else if (upstairs)
@@ -146,23 +161,12 @@ public class PlayerManager : MonoBehaviourPunCallbacks//,IPunObservable
             this.gameObject.transform.position = down_stair.stairs_down.transform.position;
         }
 
-        breakmirror = false;
+        //breakmirror = false;
         upstairs = false;
         downstairs = false;
     }
 
-
-    //public void OnPhotonSerializeView(PhotonStream stream,PhotonMessageInfo info)
-    //{
-    //if (stream.IsWriting)
-    //{
-    //stream.SendNext(this.HP);
-    //}
-    //else
-    //{
-    //this.HP = (int)stream.ReceiveNext();
-    //}
-    //}
+    
 
     public void Damageplayer()
     {
@@ -172,8 +176,19 @@ public class PlayerManager : MonoBehaviourPunCallbacks//,IPunObservable
     [PunRPC]
     void KilledPlayer(int HP)
     {
-
+        gamemanagerscript.killedplayer += 1;
         this.HP -= 100;
     }
 
+
+    private IEnumerator Breakcoroutine()
+    {
+        playeranim.SetBool("break", true);
+        //dontMove = true;
+        GetComponent<PlayerMove>().speed = 0;
+        yield return new WaitForSeconds(1.0f);
+        playeranim.SetBool("break", false);
+        //dontMove = false;
+        GetComponent<PlayerMove>().speed = 7;
+    }
 }

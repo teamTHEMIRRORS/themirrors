@@ -79,6 +79,8 @@
     <Compile Include="Assets\script\ActionBottun.cs" />
     <Compile Include="Assets\script\BloodEffectObject.cs" />
     <Compile Include="Assets\script\CameraManager.cs" />
+    <Compile Include="Assets\script\ConnenctingPlayerNumUI.cs" />
+    <Compile Include="Assets\script\ConnenctingUIScr.cs" />
     <Compile Include="Assets\script\DownStairs.cs" />
     <Compile Include="Assets\script\DualSpriteRenderer.cs" />
     <Compile Include="Assets\script\GameManager.cs" />
@@ -92,7 +94,9 @@
     <Compile Include="Assets\script\PlayerMove.cs" />
     <Compile Include="Assets\script\PlayerMove_sagyou.cs" />
     <Compile Include="Assets\script\PlayerNameInputField.cs" />
+    <Compile Include="Assets\script\ReturnFloorUI.cs" />
     <Compile Include="Assets\script\RightBottun.cs" />
+    <Compile Include="Assets\script\ShadowCasterController.cs" />
     <Compile Include="Assets\script\UIManager.cs" />
     <Compile Include="Assets\script\UpStairs.cs" />
     <Compile Include="Assets\shader\collectLight.cs" />

@@ -12,9 +12,20 @@ public class KillerManager : MonoBehaviourPunCallbacks
     public static GameObject LocalKillerInstance;
 
     public bool kill = false;
+    public bool dontmove = false;
     public bool entermirror = false;
-
+    public bool upstairs = false;
+    public bool downstairs = false;
+    public bool in_mirrorworld = false;
+    public bool exitmirrorworld = false;
+    UpStairs up_stair;
+    DownStairs down_stair;
+    MirrorManager mirrorManager;
+    GameObject stairs;
     GameObject player;
+    GameObject mirror;
+    GameObject gamemanager;
+    GameManager gamemanagerscript;
     PlayerManager playerManager;
 
     #endregion
@@ -26,22 +37,51 @@ public class KillerManager : MonoBehaviourPunCallbacks
             KillerManager.LocalKillerInstance = this.gameObject;
         }
 
+        gamemanager = GameObject.Find("GameManager");
+        gamemanagerscript = gamemanager.GetComponent<GameManager>();
         //DontDestroyOnLoad(this.gameObject);
 
     }
+
+    
 
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("hitplayer");
+            //Debug.Log("hitplayer");
             kill = true;
             player = collision.gameObject;
         }
         else if (collision.gameObject.CompareTag("Mirror"))
         {
-            Debug.Log("hitMirror");
+            //Debug.Log("hitMirror");
+            mirror = collision.gameObject;
             entermirror = true;
+        }
+        else if (collision.gameObject.CompareTag("Mirror_inthemirrorworld"))
+        {
+            //Debug.Log("hit other world Mirror");
+            mirror = collision.gameObject;
+            exitmirrorworld = true;
+        }
+        else if (collision.gameObject.CompareTag("UpStairs"))
+        {
+            upstairs = true;
+            stairs = collision.gameObject;
+        }
+        else if (collision.gameObject.CompareTag("DownStairs"))
+        {
+            downstairs = true;
+            stairs = collision.gameObject;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            GetComponent<BoxCollider2D>().isTrigger = false;
         }
     }
 
@@ -52,13 +92,29 @@ public class KillerManager : MonoBehaviourPunCallbacks
         {
             Debug.Log("you can't kill player");
             kill = false;
+
         }
         else if (collision.gameObject.CompareTag("Mirror"))
         {
             Debug.Log("you can't enter mirror");
             entermirror = false;
         }
-
+        else if (collision.gameObject.CompareTag("Mirror_inthemirrorworld"))
+        {
+            exitmirrorworld = false;
+        }
+        else if (collision.gameObject.CompareTag("UpStairs"))
+        {
+            upstairs = false;
+        }
+        else if (collision.gameObject.CompareTag("DownStairs"))
+        {
+            downstairs = false;
+        }
+        else if (collision.gameObject.CompareTag("Wall"))
+        {
+            GetComponent<BoxCollider2D>().isTrigger = true;
+        }
     }
 
     private void Start()
@@ -97,21 +153,57 @@ public class KillerManager : MonoBehaviourPunCallbacks
     {
         if (kill)
         {
-            Animator killanim = GetComponent<Animator>();
-            killanim.SetBool("kill", true);
+            //Animator killanim = GetComponent<Animator>();
+            //killanim.SetBool("kill", true);
             playerManager = player.GetComponent<PlayerManager>();
+            StartCoroutine("AnimCoroutine");
             //playerManager.HP -= 1000;
             playerManager.Damageplayer();
-            killanim.SetBool("kill", false);
+            
         }
         else if (entermirror)
         {
-
+            mirrorManager = mirror.GetComponent<MirrorManager>();
+            in_mirrorworld = true;
+            GetComponent<PlayerMove>().speed = 15;
+            this.gameObject.transform.position = mirrorManager.warppointer.transform.position;
+            GetComponent<KillerEffectObject>().InnerMirror = true;
+        }
+        else if (upstairs)
+        {
+            up_stair = stairs.GetComponent<UpStairs>();
+            this.gameObject.transform.position = up_stair.stairs_up.transform.position;
+        }
+        else if (downstairs)
+        {
+            down_stair = stairs.GetComponent<DownStairs>();
+            this.gameObject.transform.position = down_stair.stairs_down.transform.position;
+        }
+        else if (exitmirrorworld)
+        {
+            mirrorManager = mirror.GetComponent<MirrorManager>();
+            in_mirrorworld = false; ;
+            GetComponent<PlayerMove>().speed = 7;
+            this.gameObject.transform.position = mirrorManager.warppointer.transform.position;
+            GetComponent<KillerEffectObject>().InnerMirror = false;
         }
 
         kill = false;
         entermirror = false;
+        upstairs = false;
+        downstairs = false;
     }
 
+    private IEnumerator AnimCoroutine()
+    {
+        Animator killanim = GetComponent<Animator>();
+        killanim.SetBool("kill", true);
+        GetComponent<PlayerMove>().speed = 0;
+        yield return new WaitForSeconds(3.0f);
+        killanim.SetBool("kill", false);
+        gamemanagerscript.Clear();
+        GetComponent<PlayerMove>().speed = 7;
+        //Debug.Log(dontmove);
+    }
     
 }

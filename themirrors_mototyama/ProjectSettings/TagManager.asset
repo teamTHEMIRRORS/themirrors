@@ -9,6 +9,8 @@ TagManager:
   - Mirror
   - UpStairs
   - DownStairs
+  - Mirror_inthemirrorworld
+  - Wall
   layers:
   - Default
   - TransparentFX

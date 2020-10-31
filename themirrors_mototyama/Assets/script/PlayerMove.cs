@@ -11,7 +11,10 @@ public class PlayerMove : MonoBehaviourPun
     bool pushright = false;
     bool pushleft = false;
     SpriteRenderer playersprite;
-    
+    Animator anim;
+    string flipflag;
+    int flipcount = 0;
+
 
     //ボタンの検知
     public void PushDownRight()
@@ -64,32 +67,17 @@ public class PlayerMove : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        Animator anim = GetComponent<Animator>();
-        /*
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            PushDownLeft();
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            PushDownRight();
-        }
-
-        if (Input.GetKeyUp(KeyCode.A) | Input.GetKeyUp(KeyCode.S))
-        {
-            PushUp();
-        }
-        */
+        
+        
         if (pushright == true | pushleft == true)
         {
-            
+            //speed = 5f;
             anim.SetBool("walk", true);
             Move();
         }
         else
         {
-            playersprite.flipX = false;
+            //playersprite.flipX = false;
             anim.SetBool("walk", false);
         }
 
@@ -100,18 +88,36 @@ public class PlayerMove : MonoBehaviourPun
     private void Awake()
     {
         playersprite = this.GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
 
     //プレイヤーの移動
     public void Move()
     {
+
+
         if (pushright)
         {
-            playersprite.flipX = true;
+            //this.gameObject.transform.localScale = new Vector3(-1,1,1);
+            flipflag = "right";
+            if(flipcount == 0)
+            {
+                photonView.RPC("Flipplayer", RpcTarget.All, flipflag);
+                flipcount = 1; 
+            }
+            //photonView.RPC("Flipplayer", RpcTarget.All, flipflag);
             direction = new Vector2(1.0f, 0).normalized;
         }
         else
         {
+            flipflag = "left";
+            //this.gameObject.transform.localScale = new Vector3(1,1,1);
+            if(flipcount == 1)
+            {
+                photonView.RPC("Flipplayer", RpcTarget.All, flipflag);
+                flipcount = 0;
+            }
+            //photonView.RPC("Flipplayer", RpcTarget.All, flipflag);
             direction = new Vector2(-1.0f, 0).normalized;
         }
 
@@ -119,5 +125,17 @@ public class PlayerMove : MonoBehaviourPun
 
     }
 
+    [PunRPC]
+    void Flipplayer(string flipflag)
+    {
+        if(flipflag == "right")
+        {
+            this.gameObject.transform.localScale = new Vector3(-1, 1, 1);
+        }
+        else if(flipflag == "left")
+        {
+            this.gameObject.transform.localScale = new Vector3(1, 1, 1);
+        }
+    }
 
 }

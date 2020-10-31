@@ -7,22 +7,7 @@ using UnityEngine.EventSystems;
 
 public class RightBottun : MonoBehaviour
 {
-    //private int c = 0;
-    // Start is called before the first frame update
-    void Start()
-    {
-        //AddEvent();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //if(c == 0)
-        //{
-            //AddEventRight();
-            //c++;
-        //}
-    }
+    
 
     private void Awake()
     {

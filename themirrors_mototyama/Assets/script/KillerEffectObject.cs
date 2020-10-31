@@ -7,8 +7,6 @@ public class KillerEffectObject : MonoBehaviour
     private Material _killerEffectmaterial;
     [Tooltip("ダメージのエフェクトシェーダー")] public Shader _killerEffectSahder;
 
-    [Tooltip("PostEffectのVolumeProfileを入れる")]
-    public VolumeProfile _volumeProfile;
 
     private int _tempTargetId = Shader.PropertyToID("_tempTargetId");
     [Range(0, 1), Tooltip("エフェクトの量")] public float _effectVolume;
@@ -52,7 +50,7 @@ public class KillerEffectObject : MonoBehaviour
     public void ExecutePlanarReflections(ScriptableRenderContext context, Camera camera)
     {
         //レンダリングコード...
-        Debug.Log(camera.name);
+        //Debug.Log(camera.name);
         if (camera.name == "SceneCamera")
         {
             return;

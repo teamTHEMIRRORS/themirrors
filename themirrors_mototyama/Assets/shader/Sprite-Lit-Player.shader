@@ -43,10 +43,6 @@ Shader "Custom/Sprite-Lit-Player"
             #pragma prefer_hlslcc gles
             #pragma vertex CombinedShapeLightVertex
             #pragma fragment CombinedShapeLightFragment
-            #pragma multi_compile USE_SHAPE_LIGHT_TYPE_0 __
-            #pragma multi_compile USE_SHAPE_LIGHT_TYPE_1 __
-            #pragma multi_compile USE_SHAPE_LIGHT_TYPE_2 __
-            #pragma multi_compile USE_SHAPE_LIGHT_TYPE_3 __
 
             struct Attributes
             {
@@ -63,8 +59,6 @@ Shader "Custom/Sprite-Lit-Player"
                 float2 lightingUV : TEXCOORD1;
             };
 
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/LightingUtility.hlsl"
-
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
             TEXTURE2D(_MaskTex);
@@ -74,23 +68,6 @@ Shader "Custom/Sprite-Lit-Player"
             half4 _MainTex_ST;
             half4 _NormalMap_ST;
             float _Shift;
-
-            #if USE_SHAPE_LIGHT_TYPE_0
-            SHAPE_LIGHT(0)
-            #endif
-
-            #if USE_SHAPE_LIGHT_TYPE_1
-            SHAPE_LIGHT(1)
-            #endif
-
-            #if USE_SHAPE_LIGHT_TYPE_2
-            SHAPE_LIGHT(2)
-            #endif
-
-            #if USE_SHAPE_LIGHT_TYPE_3
-            SHAPE_LIGHT(3)
-            #endif
-
             Varyings CombinedShapeLightVertex(Attributes v)
             {
                 Varyings o = (Varyings)0;
@@ -105,14 +82,13 @@ Shader "Custom/Sprite-Lit-Player"
                 return o;
             }
 
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/CombinedShapeLightShared.hlsl"
 
             half4 CombinedShapeLightFragment(Varyings i) : SV_Target
             {
                 half4 main = i.color * SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
                 half4 mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
-
-                return CombinedShapeLightShared(main, mask, i.lightingUV);
+                main.rgb *= main.a;
+                return main;
             }
             ENDHLSL
         }
