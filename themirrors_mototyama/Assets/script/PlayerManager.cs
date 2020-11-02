@@ -61,7 +61,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks//,IPunObservable
             if(time > 1.5f)
             {
                 gamemanagerscript.LeaveRoom();
-                SceneManager.LoadScene("Lose");
+                SceneManager.LoadScene("surv_lose");
                 dontMove = false;
             }
             

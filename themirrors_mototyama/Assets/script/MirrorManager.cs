@@ -27,7 +27,7 @@ public class MirrorManager : MonoBehaviourPun
     {
         breaklevel++;
         photonView.RPC("BreakMirror",RpcTarget.All,breaklevel);
-        gamemanagerscript.Clear();
+        //gamemanagerscript.Clear();
     }
 
     [PunRPC]
@@ -59,7 +59,7 @@ public class MirrorManager : MonoBehaviourPun
             Destroy(this.gameObject);
             Destroy(mirror_intheotherworld);
             gamemanagerscript.breakedmirror += 1;
-
+            gamemanagerscript.Clear();
         }
         
     }

@@ -31,7 +31,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     //public int maxplayer;
     public int breakedmirror = 0;
     public int killedplayer = 0;
-
+    public float time = 0;
+    int c = 0;
     
 
     //PlayerInstance playerinstance;
@@ -169,12 +170,13 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             if (playerrole == "survivor")
             {
-                SceneManager.LoadScene("Win");
+                SceneManager.LoadScene("surv_win");
                 LeaveRoom();
             }
-            else
+
+            if(playerrole == "killer")
             {
-                SceneManager.LoadScene("Lose");
+                SceneManager.LoadScene("killer_lose");
                 LeaveRoom();
             }
 
@@ -183,12 +185,12 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             if (playerrole == "killer")
             {
-                SceneManager.LoadScene("Win");
+                SceneManager.LoadScene("killer_win");
                 LeaveRoom();
             }
             else
             {
-                SceneManager.LoadScene("Lose");
+                SceneManager.LoadScene("surv_lose");
                 LeaveRoom();
             }
         }
@@ -217,10 +219,31 @@ public class GameManager : MonoBehaviourPunCallbacks
             {
                 //Debug.Log(playercounter);
                 selectcanvas.SetActive(false);
+                //time = 0;
                 SetBottun();
+                //c++;
             }
             
         }
+
+        if(time > 360.0f)
+        {
+            if (playerrole == "killer")
+            {
+                SceneManager.LoadScene("killer_lose");
+                LeaveRoom();
+            }
+            if (playerrole == "survivor")
+            {
+                SceneManager.LoadScene("surv_lose");
+                LeaveRoom();
+            }
+        }
+        if(UIManager.bottunList != null)
+        {
+            time += Time.deltaTime;
+        }
+        
     }
 
     private void SetBottun()
@@ -232,7 +255,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             GameObject buttun = PhotonNetwork.Instantiate(this.bottunPrefab.name, this.bottunPrefab.transform.position, Quaternion.identity, 0);
             //GameObject buttun = Instantiate(bottunPrefab);
             buttun.transform.SetParent(uilist.transform);
-            
+            time = 0;
         }
     }
     

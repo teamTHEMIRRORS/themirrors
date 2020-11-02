@@ -12,9 +12,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Room for 5.unity
     guid: 634709008cb3f8a4e8d332d240704a53
   - enabled: 1
-    path: Assets/Scenes/Lose.unity
+    path: Assets/Scenes/killer_lose.unity
     guid: 3fbe91f53a7e87449844124c4371a51d
   - enabled: 1
-    path: Assets/Scenes/Win.unity
+    path: Assets/Scenes/killer_win.unity
     guid: 15e20a2a967bd4e489818a3d39e8c5fa
+  - enabled: 1
+    path: Assets/Scenes/surv_lose.unity
+    guid: f74e364b36e20464388a4a44b255e42a
+  - enabled: 1
+    path: Assets/Scenes/surv_win.unity
+    guid: b024d51dc812ae24f845afab0b6c3c8a
   m_configObjects: {}

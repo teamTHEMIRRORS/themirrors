@@ -11,6 +11,8 @@ TagManager:
   - DownStairs
   - Mirror_inthemirrorworld
   - Wall
+  - windows
+  - windows_inthemirrorworld
   layers:
   - Default
   - TransparentFX

@@ -53,13 +53,13 @@ public class KillerManager : MonoBehaviourPunCallbacks
             kill = true;
             player = collision.gameObject;
         }
-        else if (collision.gameObject.CompareTag("Mirror"))
+        else if (collision.gameObject.CompareTag("Mirror") || collision.gameObject.CompareTag("windows"))
         {
             //Debug.Log("hitMirror");
             mirror = collision.gameObject;
             entermirror = true;
         }
-        else if (collision.gameObject.CompareTag("Mirror_inthemirrorworld"))
+        else if (collision.gameObject.CompareTag("Mirror_inthemirrorworld") || collision.gameObject.CompareTag("windows_inthemirrorworld"))
         {
             //Debug.Log("hit other world Mirror");
             mirror = collision.gameObject;
@@ -90,16 +90,16 @@ public class KillerManager : MonoBehaviourPunCallbacks
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("you can't kill player");
+            //Debug.Log("you can't kill player");
             kill = false;
 
         }
-        else if (collision.gameObject.CompareTag("Mirror"))
+        else if (collision.gameObject.CompareTag("Mirror") || collision.gameObject.CompareTag("windows"))
         {
-            Debug.Log("you can't enter mirror");
+            //Debug.Log("you can't enter mirror");
             entermirror = false;
         }
-        else if (collision.gameObject.CompareTag("Mirror_inthemirrorworld"))
+        else if (collision.gameObject.CompareTag("Mirror_inthemirrorworld") || collision.gameObject.CompareTag("windows_inthemirrorworld"))
         {
             exitmirrorworld = false;
         }
@@ -165,7 +165,7 @@ public class KillerManager : MonoBehaviourPunCallbacks
         {
             mirrorManager = mirror.GetComponent<MirrorManager>();
             in_mirrorworld = true;
-            GetComponent<PlayerMove>().speed = 15;
+            GetComponent<PlayerMove>().speed = 21;
             this.gameObject.transform.position = mirrorManager.warppointer.transform.position;
             GetComponent<KillerEffectObject>().InnerMirror = true;
         }
